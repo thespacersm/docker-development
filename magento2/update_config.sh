@@ -5,6 +5,31 @@
 #              e modifica app/etc/env.php con nuovi parametri DB
 # ===========================================================
 
+# Richiesta ID container
+echo "================================================"
+echo "  Script di configurazione Magento 2"
+echo "================================================"
+echo ""
+read -p "Inserisci l'ID o il nome del container mysql: " CONTAINER_ID
+
+if [ -z "$CONTAINER_ID" ]; then
+  echo "Errore: ID container non fornito."
+  exit 1
+fi
+
+# Verifica che il container esista ed è in esecuzione
+if ! docker ps --format '{{.ID}} {{.Names}}' | grep -q "$CONTAINER_ID"; then
+  echo "Errore: container '$CONTAINER_ID' non trovato o non in esecuzione."
+  echo ""
+  echo "Container disponibili:"
+  docker ps --format 'table {{.ID}}\t{{.Names}}\t{{.Status}}'
+  exit 1
+fi
+
+echo ""
+echo "Container trovato: $CONTAINER_ID"
+echo ""
+
 # Parametri MySQL
 DB_HOST="db"
 DB_USER="magento"
@@ -59,7 +84,7 @@ QUERIES=(
 )
 
 for QUERY in "${QUERIES[@]}"; do
-  mysql -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASS" "$DB_NAME" -e "$QUERY"
+  docker exec -i "$CONTAINER_ID" mysql -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASS" "$DB_NAME" -e "$QUERY"
 done
 
 echo "Configurazioni aggiornate con successo."
