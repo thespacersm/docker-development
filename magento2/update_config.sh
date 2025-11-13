@@ -100,10 +100,10 @@ if [ ! -f "$ENV_FILE" ]; then
 fi
 
 # Sostituzione parametri DB
-sed -i "s/'host' => '.*'/'host' => '${DB_HOST}'/g" "$ENV_FILE"
-sed -i "s/'dbname' => '.*'/'dbname' => '${DB_NAME}'/g" "$ENV_FILE"
-sed -i "s/'username' => '.*'/'username' => '${DB_USER}'/g" "$ENV_FILE"
-sed -i "s/'password' => '.*'/'password' => '${DB_PASS}'/g" "$ENV_FILE"
+sed -i '' "s/'host' => '.*'/'host' => '${DB_HOST}'/g" "$ENV_FILE"
+sed -i '' "s/'dbname' => '.*'/'dbname' => '${DB_NAME}'/g" "$ENV_FILE"
+sed -i '' "s/'username' => '.*'/'username' => '${DB_USER}'/g" "$ENV_FILE"
+sed -i '' "s/'password' => '.*'/'password' => '${DB_PASS}'/g" "$ENV_FILE"
 
 echo "env.php aggiornato con i nuovi parametri database."
 
